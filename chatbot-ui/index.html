@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chatbot UI</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&amp;display=swap" rel="stylesheet">
+    <link href="chatbot.css" rel="stylesheet" type="text/css" media="all">
+    <script src="jquery.js" type="text/javascript"></script>
+    <script src="sample-response.js" type="text/javascript"></script>
+    <script src="chatbot.js" type="text/javascript"></script>
+</head>
+
+<body>
+
+    <div id="se-chatbot-container" class="se-active">
+        <div class="se-container">
+            <div class="se-chat-button se-chat-button-bottom-right">
+                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink"
+                    width="512" height="512" x="0" y="0" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512"
+                    xml:space="preserve" class="">
+                    <g>
+                        <path
+                            d="M304 96H112c-8.832 0-16 7.168-16 16s7.168 16 16 16h192c8.832 0 16-7.168 16-16s-7.168-16-16-16zM240 160H112c-8.832 0-16 7.168-16 16s7.168 16 16 16h128c8.832 0 16-7.168 16-16s-7.168-16-16-16z"
+                            fill="#000000" opacity="1" data-original="#000000" class=""></path>
+                        <path
+                            d="M352 0H64C28.704 0 0 28.704 0 64v320c0 6.208 3.584 11.872 9.216 14.496A16.232 16.232 0 0 0 16 400c3.68 0 7.328-1.28 10.24-3.712L117.792 320H352c35.296 0 64-28.704 64-64V64c0-35.296-28.704-64-64-64zm32 256c0 17.632-14.336 32-32 32H112c-3.744 0-7.36 1.312-10.24 3.712L32 349.856V64c0-17.632 14.336-32 32-32h288c17.664 0 32 14.368 32 32v192z"
+                            fill="#000000" opacity="1" data-original="#000000" class=""></path>
+                        <path
+                            d="M448 128c-8.832 0-16 7.168-16 16s7.168 16 16 16c17.664 0 32 14.368 32 32v270.688l-54.016-43.2A16.12 16.12 0 0 0 416 416H192c-17.664 0-32-14.368-32-32v-16c0-8.832-7.168-16-16-16s-16 7.168-16 16v16c0 35.296 28.704 64 64 64h218.368l75.616 60.512A16.158 16.158 0 0 0 496 512c2.336 0 4.704-.512 6.944-1.568A16.05 16.05 0 0 0 512 496V192c0-35.296-28.704-64-64-64z"
+                            fill="#000000" opacity="1" data-original="#000000" class=""></path>
+                    </g>
+                </svg>
+            </div>
+            <div class="se-block">
+                <div class="se-error-message-block">
+                    <div class="se-error-message"></div>
+                    <span class="se-error-message-close"><svg aria-hidden="true" focusable="false" width="12"
+                            height="13" class="icon icon-close-small" viewBox="0 0 12 13" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path d="M8.48627 9.32917L2.82849 3.67098" stroke="currentColor" stroke-linecap="round"
+                                stroke-linejoin="round"></path>
+                            <path d="M2.88539 9.38504L8.42932 3.61524" stroke="currentColor" stroke-linecap="round"
+                                stroke-linejoin="round"></path>
+                        </svg>
+                    </span>
+                </div>
+                <div class="se-chatbox">
+                    <div class="se-top-bar">
+                        <div class="se-back">
+                            <svg width="48" height="48" viewBox="0 0 48 48" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M37.4962 20.3345L25.4144 32.4144C25.0605 32.768 24.5869 32.9762 24.0871 32.9979C23.5873 33.0196 23.0975 32.8531 22.7144 32.5314L22.5864 32.4144L10.5065 20.3345C10.3856 20.2138 10.2896 20.0704 10.2242 19.9125C10.1587 19.7546 10.125 19.5854 10.125 19.4145C10.125 19.2436 10.1587 19.0744 10.2242 18.9165C10.2896 18.7587 10.3856 18.6153 10.5065 18.4945L11.4965 17.5045C11.7403 17.2609 12.0708 17.124 12.4155 17.124C12.7602 17.124 13.0907 17.2609 13.3345 17.5045L24.0004 28.1714L34.6673 17.5045C34.911 17.2609 35.2416 17.124 35.5862 17.124C35.9309 17.124 36.2615 17.2609 36.5052 17.5045L37.4952 18.4945C37.7389 18.7383 37.8757 19.0689 37.8757 19.4135C37.8757 19.7582 37.7389 20.0887 37.4952 20.3325L37.4962 20.3345Z"
+                                    fill="currentColor"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="se-middle">
+                        <div class="se-middle-chats">
+                            <div class="se-incoming se-incoming-bubble">
+                                <div class="se-typing">
+                                    <div class="se-bubble">
+                                        <div class="se-ellipsis one"><span></span></div>
+                                        <div class="se-ellipsis two"><span></span></div>
+                                        <div class="se-ellipsis three"><span></span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="se-bottom-bar">
+                        <input class="se-input" type="text" placeholder="Type a message...">
+                        <div class="se-submit-button" type="submit">
+                            <svg width="48" height="48" viewBox="0 0 48 48" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M39.0342 4.24494L3.04117 23.5699C1.53348 24.3794 1.69765 26.5523 3.31054 27.1351L12.524 30.4647L13.2327 41.784C13.3581 43.7873 15.8173 44.7298 17.2953 43.3411L25.8675 35.2868L36.237 39.0341C37.7306 39.5738 39.3372 38.567 39.4645 37.0114L41.9932 6.12459C42.1207 4.56714 40.432 3.49443 39.0342 4.24494ZM33.5498 13.6074C33.8465 13.3271 34.3159 13.3265 34.6134 13.606C34.8949 13.8705 34.9294 14.2999 34.6936 14.6043L22.6664 30.1356C21.8986 31.1271 20.4581 31.3247 19.4423 30.5777C18.3044 29.741 18.2013 28.1043 19.2257 27.1368L33.5498 13.6074Z"
+                                    fill="currentColor"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                <div class="se-chats active">
+                    <div class="se-chats-header">
+                        <div class="se-chats-header-logo">
+
+                            <img alt="chatbot icon" width="100" height="100"
+                                src="chatbot_small.png">
+
+                        </div>
+                        <div class="se-chats-header-text">
+                            <div class="se-chats-header-title">How may I help you?</div>
+                            <div class="se-chats-header-subtitle">
+                                Our AI assistant is here to make your shopping experience seamless and personalized.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="se-new-chat" role="button">
+                        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M39.0342 4.24494L3.04117 23.5699C1.53348 24.3794 1.69765 26.5523 3.31054 27.1351L12.524 30.4647L13.2327 41.784C13.3581 43.7873 15.8173 44.7298 17.2953 43.3411L25.8675 35.2868L36.237 39.0341C37.7306 39.5738 39.3372 38.567 39.4645 37.0114L41.9932 6.12459C42.1207 4.56714 40.432 3.49443 39.0342 4.24494ZM33.5498 13.6074C33.8465 13.3271 34.3159 13.3265 34.6134 13.606C34.8949 13.8705 34.9294 14.2999 34.6936 14.6043L22.6664 30.1356C21.8986 31.1271 20.4581 31.3247 19.4423 30.5777C18.3044 29.741 18.2013 28.1043 19.2257 27.1368L33.5498 13.6074Z"
+                                fill="currentColor"></path>
+                        </svg>
+                        <span>Start a new conversation</span>
+                    </div>
+                    <!-- <div class="se-chats-block">
+                        <div class="se-chat"></div>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

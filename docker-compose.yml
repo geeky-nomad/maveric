@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    volumes:
+      - ./modules/src:/web/src
+    command: ["uvicorn", "mav_services.main:app", "--host", "0.0.0.0", "--port", "80", "--reload"]
+    depends_on:
+      - db
+    environment:
+      - DATABASE_URL=postgresql://mav_user:secret@db:5432/mav_DB
+
+  db:
+    image: postgres:13
+    restart: always
+    environment:
+      POSTGRES_USER: mav_user
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: mav_DB
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

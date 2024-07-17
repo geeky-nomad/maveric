@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: web
+  template:
+    metadata:
+      labels:
+        app: web
+    spec:
+      containers:
+      - name: web
+        image: kubenew:kn
+        ports:
+        - containerPort: 80
+        env:
+        - name: DATABASE_URL
+          value: "postgresql://mav_user:secret@db:5432/mav_DB"

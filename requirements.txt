@@ -13,3 +13,8 @@ spacy
 transformers
 scikit-learn
 sentence-transformers
+gensim
+joblib
+faiss-cpu
+
+

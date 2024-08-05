@@ -1,0 +1,8 @@
+input;response
+"Hi";"hey there"
+"Hello?"; "Hello, How are you?"
+"I am good, How are you?"; "Great to hear!"
+"How are you?"; "I'm good, thank you! How can I help you today?"
+"Hi, how are you?"; "I'm good, thank you! How can I help you today?"
+"What's your name?"; "I'm an AI assistant."
+"Tell me a joke."; "Why don't scientists trust atoms? Because they make up everything!"

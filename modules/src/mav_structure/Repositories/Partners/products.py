@@ -9,13 +9,24 @@ from mav_framework.database.blueprint import use_db_session
 import pandas as pd
 from faker import Faker
 import uuid
+from enum import Enum
 from mav_structure.NLP.product_search import extract_entities
+
+# ----
+from mav_structure.utilities.load_llm import generate_chit_chat_response
+from mav_structure.utilities.load_classifier import classify_intent
+from mav_structure.utilities.load_rag import handle_user_query
 
 # Faker instance
 faker = Faker()
 
 csv_path = 'mav_structure/Data/hiketron.csv'
 df = pd.read_csv(csv_path)
+
+
+class IntentEnum(Enum):
+    CHITCHAT = "Chit-chat"
+    PRODUCTSEARCH = "PRODUCTSEARCH"
 
 
 async def get_products():
@@ -43,7 +54,7 @@ async def product_categories() -> list:
 
 
 async def get_selected_category_items(category):
-    category = df[df['Type'] == category]['Handle'].tolist()
+    category = df[df['Type'] == category]['Title'].tolist()
     # convert category in the format {'text': '', 'value': ''}
     mapping_categories = [{'text': ' '.join(word.capitalize() for word in _item.split('-')), 'value': _item} for _item
                           in category]
@@ -52,7 +63,7 @@ async def get_selected_category_items(category):
 
 async def get_selected_category_products(sub_category):
     product_list = []
-    df_filtered = df[df['Handle'] == sub_category]
+    df_filtered = df[df['Title'] == sub_category]
     df_selected = df_filtered[['Handle', 'Variant Price', 'Image Src', 'Product URL']]
     products = df_selected.to_dict(orient='records')
     final_di = dict(
@@ -68,78 +79,22 @@ async def get_selected_category_products(sub_category):
 async def get_chit_chat(query: str):
     entity_mapping = dict()
     # identify the intent of the query
-    intents = {
-        'chit_chat': ['Hi', 'Hello', 'Hey'],
-        'product_search': []
-    }
-    if query.capitalize() in intents.get('chit_chat'):
-        welcome = await product_categories()
-        entity_mapping['chit_chat'] = welcome
+    intent = classify_intent(query)
+    if intent == IntentEnum.CHITCHAT.value:
+        message_response = generate_chit_chat_response(query)
+        entity_mapping['chit_chat'] = {'message': message_response}
         return entity_mapping
     else:
-        entities = extract_entities(query)  # entities dict
+        entities = extract_entities(query)  # entities dict TODO -> handle this through LLM which is being used
         for key, value in entities.items():
             if key and value:
                 category = await get_selected_category_items(value)
                 entity_mapping['category'] = category
                 break
             else:
-                products = await find_similar_product(query)
+                products = handle_user_query(query)
                 entity_mapping['sub_category'] = products
         return entity_mapping
-
-# Load BERT model
-model = SentenceTransformer('all-MiniLM-L6-v2')
-
-# Precompute embeddings for product handles
-handle_embeddings = model.encode(df['Handle'].tolist(), convert_to_tensor=True)
-
-async def find_similar_product(query):
-    # Embed the user query
-    query_embedding = model.encode(query, convert_to_tensor=True)
-
-    # Compute cosine similarity between query and handles
-    similarities = util.pytorch_cos_sim(query_embedding, handle_embeddings).flatten()
-
-    # Find the indices of the top 3 most similar handles
-    top_indices = similarities.argsort(descending=True)[:2]
-
-    # Retrieve the matched records
-    matched_records = df.iloc[top_indices]
-
-    # Convert matched records to JSON-serializable format with only Handle and ImageSrc
-    final_list = matched_records[['Handle']].to_dict(orient='records')
-    _li = [
-        {
-            'text': ' '.join(word.capitalize() for word in _handle.get('Handle').split('-')),
-            'value': _handle.get('Handle')
-        }
-        for _handle in final_list
-    ]
-
-    return _li
-
-# async def find_similar_product(query):
-#     vectorizer = TfidfVectorizer()
-#     handle_vectors = vectorizer.fit_transform(df['Handle'])
-#     query_vec = vectorizer.transform([query])
-#
-#     # Compute cosine similarity
-#     similarity = cosine_similarity(query_vec, handle_vectors).flatten()
-#
-#     # Find the index of the most similar handle
-#     most_similar_index = similarity.argmax()
-#
-#     # Retrieve the price and image source
-#     matched_record = df.iloc[most_similar_index]
-#     record_handle = matched_record.to_dict()
-#     final_list = [
-#         {
-#             'text': ' '.join(word.capitalize() for word in record_handle.get('Handle').split('-')),
-#             'value': record_handle.get('Handle')
-#         }
-#     ]
-#     return final_list
 
 
 # ===========================================================================================

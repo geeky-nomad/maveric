@@ -42,9 +42,9 @@ async def chit_chat(schema: ChitChatSchema):
     response = await get_chit_chat(query)
     if response.get('chit_chat'):
         return JSONResponse({
-            'message': 'Welcome to Hiketron chatbot, How can I assist you today?',
-            'type': 'select-category',
-            'options': response.get('chit_chat')
+            'message': response.get('chit_chat').get('message'),
+            'type': 'chit-chat',
+            'options': []
         })
     elif response.get('category'):
         return JSONResponse({

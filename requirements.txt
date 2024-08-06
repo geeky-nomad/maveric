@@ -1,0 +1,20 @@
+fastapi
+pydentic
+alembic
+uvicorn
+SQLAlchemy
+pandas
+psycopg2-binary >= 2.9.5
+faker
+numpy
+notebook
+ipython
+spacy
+transformers
+scikit-learn
+sentence-transformers
+gensim
+joblib
+faiss-cpu
+
+
